@@ -16,8 +16,6 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --gap: 10px;
-
   --main-bg-color: #242424;
   --element-bg-color: #2f2f2f;
   --header-bg-color: #444;
@@ -68,6 +66,10 @@ button:hover {
 
 button:active {
   background-color: #555;
+}
+
+hr {
+  width: 300px;
 }
 
 #app {

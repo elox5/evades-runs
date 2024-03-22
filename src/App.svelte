@@ -1,11 +1,19 @@
 <script lang="ts">
+  import Button from "./lib/Button.svelte";
+  import ListDisplay from "./lib/ListDisplay.svelte";
+  import Settings from "./lib/Settings.svelte";
+
+  let list: string[] = [];
 </script>
 
 <header>
   <h1 class="title">Evades Runs Generator</h1>
 </header>
 <main>
-  <p></p>
+  <Settings></Settings>
+  <Button>Generate!</Button>
+  <hr />
+  <ListDisplay {list}></ListDisplay>
 </main>
 <footer>
   <p>
@@ -42,6 +50,14 @@
   main {
     width: 100%;
     min-height: calc(100vh - 140px);
+
+    padding: 40px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
   }
 
   a {
