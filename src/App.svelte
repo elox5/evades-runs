@@ -1,47 +1,76 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
 </script>
 
+<header>
+  <h1 class="title">Evades Runs Generator</h1>
+</header>
 <main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+  <p></p>
 </main>
+<footer>
+  <p>
+    Made by <a class="elox" href="https://github.com/elox5" target="_blank"
+      >elOx</a
+    >
+    and
+    <a class="bonsix" href="https://github.com/bonsix" target="_blank">Bonsix</a
+    >
+  </p>
+  <p>
+    <a class="evades" href="https://evades.io" target="_blank">evades.io</a>
+  </p>
+  <a href="https://github.com/elox5/evades-runs">Source</a>
+</footer>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+  header,
+  footer {
+    background-color: var(--header-bg-color);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
   }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+
+  header {
+    position: sticky;
+    top: 0px;
+    z-index: 1;
   }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
+
+  main {
+    width: 100%;
+    min-height: calc(100vh - 140px);
   }
-  .read-the-docs {
-    color: #888;
+
+  a {
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  a,
+  a:visited {
+    color: var(--link-color);
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  a.elox {
+    --link-color: #80ff80;
+  }
+
+  a.bonsix {
+    --link-color: #3bc1ff;
+  }
+
+  a.evades {
+    --link-color: #1986cf;
+  }
+
+  .title {
+    font-weight: normal;
   }
 </style>
