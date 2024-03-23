@@ -20,7 +20,7 @@
         players: [],
     };
 
-    let heroCount = [0];
+    let heroCount = [1];
 
     let availableMaps = maps;
     $: availableMaps = maps.filter((map) => !map.hard || includeHardMaps);
@@ -84,82 +84,87 @@
 </script>
 
 <div class="settings">
-    <h1>Map selection</h1>
+    <div class="settings-section">
+        <h1>Map selection</h1>
 
-    <label>
-        Generate map
-        <input type="checkbox" bind:checked={mapSettings.generateMap} />
-    </label>
-
-    {#if mapSettings.generateMap}
         <label>
-            Include hard maps
-            <input type="checkbox" bind:checked={includeHardMaps} />
+            Generate map
+            <input type="checkbox" bind:checked={mapSettings.generateMap} />
         </label>
 
-        <div>
-            <p>Area Count: {mapSettings.minAreas} - {mapSettings.maxAreas}</p>
-            <div class="slider">
-                <RangeSlider
-                    min={0}
-                    max={areaValues.length - 1}
-                    range
-                    pips
-                    pushy
-                    formatter={areaFormatter}
-                    springValues={{ stiffness: 1, damping: 1 }}
-                    all="label"
-                    bind:values={areaRange}
-                />
+        {#if mapSettings.generateMap}
+            <label>
+                Include hard maps
+                <input type="checkbox" bind:checked={includeHardMaps} />
+            </label>
+
+            <div>
+                <p>
+                    Area Count: {mapSettings.minAreas} - {mapSettings.maxAreas}
+                </p>
+                <div class="slider">
+                    <RangeSlider
+                        min={0}
+                        max={areaValues.length - 1}
+                        range
+                        pips
+                        pushy
+                        formatter={areaFormatter}
+                        springValues={{ stiffness: 1, damping: 1 }}
+                        all="label"
+                        bind:values={areaRange}
+                    />
+                </div>
             </div>
-        </div>
 
-        <div>
-            <p>VP Amount: {mapSettings.minVp} - {mapSettings.maxVp}</p>
-            <div class="slider">
-                <RangeSlider
-                    min={0}
-                    max={vpValues.length - 1}
-                    range
-                    pips
-                    pushy
-                    formatter={vpFormatter}
-                    springValues={{ stiffness: 1, damping: 1 }}
-                    all="label"
-                    bind:values={vpRange}
-                />
+            <div>
+                <p>VP Amount: {mapSettings.minVp} - {mapSettings.maxVp}</p>
+                <div class="slider">
+                    <RangeSlider
+                        min={0}
+                        max={vpValues.length - 1}
+                        range
+                        pips
+                        pushy
+                        formatter={vpFormatter}
+                        springValues={{ stiffness: 1, damping: 1 }}
+                        all="label"
+                        bind:values={vpRange}
+                    />
+                </div>
             </div>
-        </div>
-    {/if}
+        {/if}
+    </div>
+    <div class="settings-section">
+        <h1>Hero selection</h1>
 
-    <h1>Hero selection</h1>
-
-    <label>
-        Generate heroes
-        <input type="checkbox" bind:checked={heroSettings.generateHeroes} />
-    </label>
-
-    {#if heroSettings.generateHeroes}
         <label>
-            Unique heroes
-            <input type="checkbox" bind:checked={heroSettings.unique} />
+            Generate heroes
+            <input type="checkbox" bind:checked={heroSettings.generateHeroes} />
         </label>
 
-        <div>
-            <p>Player count: {heroCount[0]}</p>
-            <div class="slider">
-                <RangeSlider
-                    min={1}
-                    max={10}
-                    pips
-                    pushy
-                    springValues={{ stiffness: 1, damping: 1 }}
-                    all="label"
-                    bind:values={heroCount}
-                />
+        {#if heroSettings.generateHeroes}
+            <label>
+                Unique heroes
+                <input type="checkbox" bind:checked={heroSettings.unique} />
+            </label>
+
+            <div>
+                <p>Player count: {heroCount[0]}</p>
+                <div class="slider">
+                    <RangeSlider
+                        min={1}
+                        max={10}
+                        pips
+                        pushy
+                        springValues={{ stiffness: 1, damping: 1 }}
+                        all="label"
+                        bind:values={heroCount}
+                    />
+                </div>
             </div>
-        </div>
-    {/if}
+        {/if}
+    </div>
 </div>
 
 <style>
@@ -178,6 +183,27 @@
         background-color: var(--element-bg-color);
         border-radius: 10px;
         padding: 20px;
+    }
+
+    @media (min-width: 940px) {
+        .settings {
+            width: 860px;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .settings-section {
+            flex: 1;
+        }
+    }
+
+    .settings-section {
+        width: 360px;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 20px;
     }
 
     h1 {

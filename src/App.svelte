@@ -69,6 +69,13 @@
     gap: 20px;
   }
 
+  @media (max-width: 480px) {
+    main {
+      padding-inline: 10px;
+      padding-block: 30px;
+    }
+  }
+
   a {
     text-decoration: none;
     font-weight: bold;
