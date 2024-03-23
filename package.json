@@ -17,5 +17,9 @@
     "tslib": "^2.6.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
+  },
+  "dependencies": {
+    "@types/svelte-range-slider-pips": "^2.0.4",
+    "svelte-range-slider-pips": "^2.3.1"
   }
 }
