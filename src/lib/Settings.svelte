@@ -32,7 +32,6 @@
         }
     }
 
-    let areaValues = [8, 16, 40, 80, 480];
     let areaRange = [2, 3];
 
     let vpValues: number[] = [];
@@ -53,8 +52,8 @@
     let vpRange = [0, 12];
 
     $: if (areaRange) {
-        mapSettings.minAreas = areaValues[areaRange[0]];
-        mapSettings.maxAreas = areaValues[areaRange[1]];
+        mapSettings.minAreas = areaLengths[areaRange[0]].min;
+        mapSettings.maxAreas = areaLengths[areaRange[1]].max;
     }
     $: if (vpRange) {
         let vpValuesLocal = [
@@ -77,12 +76,26 @@
     //
 
     const areaFormatter = (value: number) => {
-        return areaValues[value].toString();
+        return areaLengths[value].name;
     };
 
     const vpFormatter = (value: number) => {
         return vpValues[value].toString();
     };
+
+    interface AreaLength {
+        name: string;
+        min: number;
+        max: number;
+    }
+
+    const areaLengths: AreaLength[] = [
+        { name: "tiny", min: 8, max: 15 },
+        { name: "short", min: 16, max: 28 },
+        { name: "normal", min: 38, max: 43 },
+        { name: "long", min: 54, max: 80 },
+        { name: "huge", min: 400, max: 480 },
+    ];
 </script>
 
 <div class="settings">
@@ -110,7 +123,7 @@
                 <div class="slider">
                     <RangeSlider
                         min={0}
-                        max={areaValues.length - 1}
+                        max={areaLengths.length - 1}
                         range
                         pips
                         pushy
