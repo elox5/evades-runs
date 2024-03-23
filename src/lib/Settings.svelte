@@ -1,12 +1,7 @@
 <script lang="ts">
     import RangeSlider from "svelte-range-slider-pips";
     import { maps } from "../data/maps";
-    import type {
-        GenerationSettings,
-        HeroSettings,
-        MapSettings,
-        PlayerSettings,
-    } from "./settings";
+    import type { HeroSettings, MapSettings, PlayerSettings } from "./settings";
 
     export let mapSettings: MapSettings = {
         generateMap: true,
@@ -25,11 +20,6 @@
         players: [],
     };
 
-    export let generationSettings: GenerationSettings = {
-        count: 1,
-        uniqueMaps: false,
-    };
-
     let heroCount = [1];
 
     $: if (heroCount) {
@@ -42,54 +32,46 @@
         }
     }
 
-    let availableMaps = maps;
-    $: availableMaps = maps.filter((map) => !map.hard || includeHardMaps);
+    let areaValues = [8, 16, 40, 80, 480];
+    let areaRange = [2, 3];
 
-    let vpSliderAvailableMaps = maps;
-    $: vpSliderAvailableMaps = availableMaps.filter(
-        (map) =>
-            map.area_count <= areaValues[areaRange[1]] &&
-            map.area_count >= areaValues[areaRange[0]],
-    );
-
-    let areaValues = [...new Set(maps.map((map) => map.area_count))].sort(
-        (a, b) => a - b,
-    );
-    let areaRange = [areaValues.indexOf(40), areaValues.indexOf(80)];
-
-    let vpValues = [...new Set(maps.map((map) => map.vp))].sort(
-        (a, b) => a - b,
-    );
-    let vpRange = [0, vpValues.length - 1];
-
-    $: if (vpRange) {
-        mapSettings.minVp = vpValues[vpRange[0]];
-        mapSettings.maxVp = vpValues[vpRange[1]];
+    let vpValues: number[] = [];
+    $: {
+        vpValues = [
+            ...new Set(
+                maps
+                    .filter((map) => !map.hard || mapSettings.includeHardMaps)
+                    .filter(
+                        (map) =>
+                            map.area_count >= mapSettings.minAreas &&
+                            map.area_count <= mapSettings.maxAreas,
+                    )
+                    .map((map) => map.vp),
+            ),
+        ].sort((a, b) => a - b);
     }
+    let vpRange = [0, 12];
 
     $: if (areaRange) {
         mapSettings.minAreas = areaValues[areaRange[0]];
         mapSettings.maxAreas = areaValues[areaRange[1]];
     }
-
-    let includeHardMaps: boolean = true;
-
-    $: if (includeHardMaps) {
-        mapSettings.includeHardMaps = includeHardMaps;
-    }
-
-    //
-
-    $: {
-        areaValues = [
-            ...new Set(availableMaps.map((map) => map.area_count)),
+    $: if (vpRange) {
+        let vpValuesLocal = [
+            ...new Set(
+                maps
+                    .filter((map) => !map.hard || mapSettings.includeHardMaps)
+                    .filter(
+                        (map) =>
+                            map.area_count >= mapSettings.minAreas &&
+                            map.area_count <= mapSettings.maxAreas,
+                    )
+                    .map((map) => map.vp),
+            ),
         ].sort((a, b) => a - b);
-    }
 
-    $: {
-        vpValues = [
-            ...new Set(vpSliderAvailableMaps.map((map) => map.vp)),
-        ].sort((a, b) => a - b);
+        mapSettings.minVp = vpValuesLocal[vpRange[0]];
+        mapSettings.maxVp = vpValuesLocal[vpRange[1]];
     }
 
     //
@@ -115,7 +97,10 @@
         {#if mapSettings.generateMap}
             <label>
                 Include hard maps
-                <input type="checkbox" bind:checked={includeHardMaps} />
+                <input
+                    type="checkbox"
+                    bind:checked={mapSettings.includeHardMaps}
+                />
             </label>
 
             <div>

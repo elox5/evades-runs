@@ -1,16 +1,10 @@
 <script lang="ts">
     import Button from "./lib/Button.svelte";
-    import ListDisplay from "./lib/ListDisplay.svelte";
     import Settings from "./lib/Settings.svelte";
-    import type {
-        GenerationSettings,
-        HeroSettings,
-        MapSettings,
-    } from "./lib/settings";
+    import type { HeroSettings, MapSettings } from "./lib/settings";
     import { maps } from "./data/maps";
     import type { MapData } from "./data/maps";
 
-    let generationSettings: GenerationSettings;
     let mapSettings: MapSettings;
     let heroSettings: HeroSettings;
 
@@ -59,8 +53,7 @@
     <h1 class="title">Evades Runs Generator</h1>
 </header>
 <main>
-    <Settings bind:mapSettings bind:heroSettings bind:generationSettings
-    ></Settings>
+    <Settings bind:mapSettings bind:heroSettings></Settings>
     <Button onClick={generate}>Generate!</Button>
     <hr />
 
@@ -139,7 +132,7 @@
 
         background-color: var(--element-bg-color);
         border-radius: 10px;
-        padding: 10px;
+        padding: 20px;
 
         display: flex;
         flex-direction: column;
