@@ -1,7 +1,7 @@
 import type { Hero } from "../data/heroes";
 
 export interface GenerationSettings {
-    repeat: number;
+    count: number;
     uniqueMaps: boolean;
 }
 

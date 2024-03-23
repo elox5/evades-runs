@@ -1,7 +1,12 @@
 <script lang="ts">
     import RangeSlider from "svelte-range-slider-pips";
     import { maps } from "../data/maps";
-    import type { HeroSettings, MapSettings } from "./settings";
+    import type {
+        GenerationSettings,
+        HeroSettings,
+        MapSettings,
+        PlayerSettings,
+    } from "./settings";
 
     export let mapSettings: MapSettings = {
         generateMap: true,
@@ -20,13 +25,28 @@
         players: [],
     };
 
+    export let generationSettings: GenerationSettings = {
+        count: 1,
+        uniqueMaps: false,
+    };
+
     let heroCount = [1];
+
+    $: if (heroCount) {
+        heroSettings.players = [];
+        for (let i = 0; i < heroCount[0]; i++) {
+            let player: PlayerSettings = {
+                bannedHeroes: [],
+            };
+            heroSettings.players.push(player);
+        }
+    }
 
     let availableMaps = maps;
     $: availableMaps = maps.filter((map) => !map.hard || includeHardMaps);
 
     let vpSliderAvailableMaps = maps;
-    $: vpSliderAvailableMaps = maps.filter(
+    $: vpSliderAvailableMaps = availableMaps.filter(
         (map) =>
             map.area_count <= areaValues[areaRange[1]] &&
             map.area_count >= areaValues[areaRange[0]],
@@ -155,6 +175,7 @@
                     <RangeSlider
                         min={1}
                         max={10}
+                        range="min"
                         pips
                         pushy
                         springValues={{ stiffness: 1, damping: 1 }}

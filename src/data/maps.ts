@@ -51,7 +51,7 @@ export const maps: MapData[] = [
   { short_name: "dd2", name: "Dusty Depths", vp: 8, area_count: 20, hard: false },
 ];
 
-interface MapData {
+export interface MapData {
   short_name: string;
   name: string;
   vp: number;

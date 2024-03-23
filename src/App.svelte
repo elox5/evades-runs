@@ -1,108 +1,187 @@
 <script lang="ts">
-  import Button from "./lib/Button.svelte";
-  import ListDisplay from "./lib/ListDisplay.svelte";
-  import Settings from "./lib/Settings.svelte";
-  import type {
-    GenerationSettings,
-    HeroSettings,
-    MapSettings,
-  } from "./lib/settings";
+    import Button from "./lib/Button.svelte";
+    import ListDisplay from "./lib/ListDisplay.svelte";
+    import Settings from "./lib/Settings.svelte";
+    import type {
+        GenerationSettings,
+        HeroSettings,
+        MapSettings,
+    } from "./lib/settings";
+    import { maps } from "./data/maps";
+    import type { MapData } from "./data/maps";
 
-  let generationSettings: GenerationSettings;
-  let mapSettings: MapSettings;
-  let heroSettings: HeroSettings;
+    let generationSettings: GenerationSettings;
+    let mapSettings: MapSettings;
+    let heroSettings: HeroSettings;
 
-  let list: string[] = [];
+    let map: MapData;
+    let list: string[] = [];
+
+    let notGenerated: boolean = true;
+    let generateNothing: boolean = false;
+
+    function generate() {
+        notGenerated = false;
+
+        if (!mapSettings.generateMap && !heroSettings.generateHeroes) {
+            generateNothing = true;
+            return;
+        }
+
+        generateNothing = false;
+
+        if (mapSettings.generateMap) {
+            generateMap();
+        }
+    }
+
+    function generateMap() {
+        let availableMaps = maps
+            .filter(
+                (map) => mapSettings.bannedMaps.indexOf(map.short_name) === -1,
+            )
+            .filter((map) => !map.hard || mapSettings.includeHardMaps)
+            .filter(
+                (map) =>
+                    map.vp >= mapSettings.minVp && map.vp <= mapSettings.maxVp,
+            )
+            .filter(
+                (map) =>
+                    map.area_count >= mapSettings.minAreas &&
+                    map.area_count <= mapSettings.maxAreas,
+            );
+
+        map = availableMaps[Math.floor(Math.random() * availableMaps.length)];
+    }
 </script>
 
 <header>
-  <h1 class="title">Evades Runs Generator</h1>
+    <h1 class="title">Evades Runs Generator</h1>
 </header>
 <main>
-  <Settings bind:mapSettings></Settings>
-  <Button>Generate!</Button>
-  <hr />
-  <ListDisplay {list}></ListDisplay>
+    <Settings bind:mapSettings bind:heroSettings bind:generationSettings
+    ></Settings>
+    <Button onClick={generate}>Generate!</Button>
+    <hr />
+
+    <div class="display">
+        {#if notGenerated}
+            <span class="placeholder">Generated run goes here...</span>
+        {:else if generateNothing}
+            <span class="placeholder">What did you expect to happen?</span>
+        {:else}
+            <h3>{map.name}</h3>
+        {/if}
+    </div>
 </main>
 <footer>
-  <p>
-    Made by <a class="elox" href="https://github.com/elox5" target="_blank"
-      >elOx</a
-    >
-    and
-    <a class="bonsix" href="https://github.com/bonsix" target="_blank">Bonsix</a
-    >
-  </p>
-  <p>
-    <a class="evades" href="https://evades.io" target="_blank">evades.io</a>
-  </p>
-  <a href="https://github.com/elox5/evades-runs">Source</a>
+    <p>
+        Made by
+        <a class="elox" href="https://github.com/elox5" target="_blank">
+            elOx
+        </a>
+        and
+        <a class="bonsix" href="https://github.com/bonsix" target="_blank">
+            Bonsix
+        </a>
+    </p>
+    <p>
+        <a class="evades" href="https://evades.io" target="_blank">evades.io</a>
+    </p>
+    <a href="https://github.com/elox5/evades-runs">Source</a>
 </footer>
 
 <style>
-  header,
-  footer {
-    background-color: var(--header-bg-color);
+    header,
+    footer {
+        background-color: var(--header-bg-color);
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-  }
-
-  header {
-    position: sticky;
-    top: 0px;
-    z-index: 1;
-  }
-
-  main {
-    width: 100%;
-    min-height: calc(100vh - 140px);
-
-    padding: 40px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-    gap: 20px;
-  }
-
-  @media (max-width: 480px) {
-    main {
-      padding-inline: 10px;
-      padding-block: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
     }
-  }
 
-  a {
-    text-decoration: none;
-    font-weight: bold;
-  }
+    header {
+        position: sticky;
+        top: 0px;
+        z-index: 1;
+    }
 
-  a,
-  a:visited {
-    color: var(--link-color);
-  }
+    main {
+        width: 100%;
+        min-height: calc(100vh - 140px);
 
-  a:hover {
-    text-decoration: underline;
-  }
+        padding: 40px;
 
-  a.elox {
-    --link-color: #80ff80;
-  }
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 20px;
+    }
 
-  a.bonsix {
-    --link-color: #3bc1ff;
-  }
+    @media (max-width: 480px) {
+        main {
+            padding-inline: 10px;
+            padding-block: 30px;
+        }
+    }
 
-  a.evades {
-    --link-color: #1986cf;
-  }
+    .display {
+        width: 400px;
+        min-height: 200px;
 
-  .title {
-    font-weight: normal;
-  }
+        font-size: 1.5rem;
+
+        display: flex;
+        flex-direction: column;
+
+        background-color: var(--element-bg-color);
+        border-radius: 10px;
+        padding: 10px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+    }
+
+    .display h3 {
+        font-size: 1.4rem;
+    }
+
+    .placeholder {
+        color: #ffffff77;
+    }
+
+    a {
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    a,
+    a:visited {
+        color: var(--link-color);
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    a.elox {
+        --link-color: #80ff80;
+    }
+
+    a.bonsix {
+        --link-color: #3bc1ff;
+    }
+
+    a.evades {
+        --link-color: #1986cf;
+    }
+
+    .title {
+        font-weight: normal;
+    }
 </style>

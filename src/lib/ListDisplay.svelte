@@ -1,19 +1,27 @@
 <script lang="ts">
+    import type { MapData } from "../data/maps";
+
+    export let map: MapData;
     export let list: string[];
+    export let generateNothing: boolean;
 </script>
 
-<div class="list">
-    {#if list.length === 0}
-        <div class="placeholder">Generated run goes here...</div>
-    {:else}
-        {#each list as item, index}
-            <span>{item}</span>
+<div class="element">
+    <div class="list">
+        {#if generateNothing}
+            <div class="placeholder">What did you expect to happen?</div>
+        {:else if list.length === 0}
+            <div class="placeholder">Generated run goes here...</div>
+        {:else}
+            {#each list as item, index}
+                <span>{item}</span>
 
-            {#if index < list.length - 1}
-                <span class="bullet">•</span>
-            {/if}
-        {/each}
-    {/if}
+                {#if index < list.length - 1}
+                    <span class="bullet">•</span>
+                {/if}
+            {/each}
+        {/if}
+    </div>
 </div>
 
 <style>
