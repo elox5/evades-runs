@@ -1,15 +1,26 @@
 <script lang="ts">
     import RangeSlider from "svelte-range-slider-pips";
     import { maps } from "../data/maps";
+    import type { HeroSettings, MapSettings } from "./settings";
 
     export let mapSettings: MapSettings = {
         generateMap: true,
+        bannedMaps: [],
         includeHardMaps: true,
         minVp: 0,
         maxVp: 0,
         minAreas: 0,
         maxAreas: 0,
     };
+
+    export let heroSettings: HeroSettings = {
+        generateHeroes: true,
+        unique: false,
+        named: false,
+        players: [],
+    };
+
+    let heroCount = [0];
 
     let availableMaps = maps;
     $: availableMaps = maps.filter((map) => !map.hard || includeHardMaps);
@@ -63,24 +74,13 @@
 
     //
 
-    const vpFormatter = (value: number) => {
-        return vpValues[value].toString();
-    };
-
     const areaFormatter = (value: number) => {
         return areaValues[value].toString();
     };
 
-    //
-
-    interface MapSettings {
-        generateMap: boolean;
-        includeHardMaps: boolean;
-        minVp: number;
-        maxVp: number;
-        minAreas: number;
-        maxAreas: number;
-    }
+    const vpFormatter = (value: number) => {
+        return vpValues[value].toString();
+    };
 </script>
 
 <div class="settings">
@@ -91,46 +91,75 @@
         <input type="checkbox" bind:checked={mapSettings.generateMap} />
     </label>
 
-    <label>
-        Include hard maps
-        <input type="checkbox" bind:checked={includeHardMaps} />
-    </label>
+    {#if mapSettings.generateMap}
+        <label>
+            Include hard maps
+            <input type="checkbox" bind:checked={includeHardMaps} />
+        </label>
 
-    <div>
-        <p>Area Count: {mapSettings.minAreas} - {mapSettings.maxAreas}</p>
-        <div class="slider">
-            <RangeSlider
-                min={0}
-                max={areaValues.length - 1}
-                range
-                pips
-                pushy
-                formatter={areaFormatter}
-                springValues={{ stiffness: 1, damping: 1 }}
-                all="label"
-                bind:values={areaRange}
-            />
+        <div>
+            <p>Area Count: {mapSettings.minAreas} - {mapSettings.maxAreas}</p>
+            <div class="slider">
+                <RangeSlider
+                    min={0}
+                    max={areaValues.length - 1}
+                    range
+                    pips
+                    pushy
+                    formatter={areaFormatter}
+                    springValues={{ stiffness: 1, damping: 1 }}
+                    all="label"
+                    bind:values={areaRange}
+                />
+            </div>
         </div>
-    </div>
 
-    <div>
-        <p>VP Amount: {mapSettings.minVp} - {mapSettings.maxVp}</p>
-        <div class="slider">
-            <RangeSlider
-                min={0}
-                max={vpValues.length - 1}
-                range
-                pips
-                pushy
-                formatter={vpFormatter}
-                springValues={{ stiffness: 1, damping: 1 }}
-                all="label"
-                bind:values={vpRange}
-            />
+        <div>
+            <p>VP Amount: {mapSettings.minVp} - {mapSettings.maxVp}</p>
+            <div class="slider">
+                <RangeSlider
+                    min={0}
+                    max={vpValues.length - 1}
+                    range
+                    pips
+                    pushy
+                    formatter={vpFormatter}
+                    springValues={{ stiffness: 1, damping: 1 }}
+                    all="label"
+                    bind:values={vpRange}
+                />
+            </div>
         </div>
-    </div>
+    {/if}
 
     <h1>Hero selection</h1>
+
+    <label>
+        Generate heroes
+        <input type="checkbox" bind:checked={heroSettings.generateHeroes} />
+    </label>
+
+    {#if heroSettings.generateHeroes}
+        <label>
+            Unique heroes
+            <input type="checkbox" bind:checked={heroSettings.unique} />
+        </label>
+
+        <div>
+            <p>Player count: {heroCount[0]}</p>
+            <div class="slider">
+                <RangeSlider
+                    min={1}
+                    max={10}
+                    pips
+                    pushy
+                    springValues={{ stiffness: 1, damping: 1 }}
+                    all="label"
+                    bind:values={heroCount}
+                />
+            </div>
+        </div>
+    {/if}
 </div>
 
 <style>

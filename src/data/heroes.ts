@@ -1,4 +1,4 @@
-export enum Heroes {
+export enum Hero {
   Magmax,
   Rime,
   Morfe,

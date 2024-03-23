@@ -2,6 +2,15 @@
   import Button from "./lib/Button.svelte";
   import ListDisplay from "./lib/ListDisplay.svelte";
   import Settings from "./lib/Settings.svelte";
+  import type {
+    GenerationSettings,
+    HeroSettings,
+    MapSettings,
+  } from "./lib/settings";
+
+  let generationSettings: GenerationSettings;
+  let mapSettings: MapSettings;
+  let heroSettings: HeroSettings;
 
   let list: string[] = [];
 </script>
@@ -10,7 +19,7 @@
   <h1 class="title">Evades Runs Generator</h1>
 </header>
 <main>
-  <Settings></Settings>
+  <Settings bind:mapSettings></Settings>
   <Button>Generate!</Button>
   <hr />
   <ListDisplay {list}></ListDisplay>
