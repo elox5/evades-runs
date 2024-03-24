@@ -167,20 +167,13 @@
         width: 100%;
         min-height: calc(100vh - 140px);
 
-        padding: 40px;
+        padding: 20px;
 
         display: flex;
         flex-direction: column;
         justify-content: start;
         align-items: center;
         gap: 20px;
-    }
-
-    @media (max-width: 480px) {
-        main {
-            padding-inline: 10px;
-            padding-block: 30px;
-        }
     }
 
     .display {
