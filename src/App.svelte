@@ -13,12 +13,26 @@
 
     let notGenerated: boolean = true;
     let generateNothing: boolean = false;
+    let zeroMaps: boolean = false;
+    let zeroHeroes: boolean = false;
 
     function generate() {
         notGenerated = false;
+        zeroMaps = false;
+        zeroHeroes = false;
 
         if (!mapSettings.generateMap && !heroSettings.generateHeroes) {
             generateNothing = true;
+            return;
+        }
+
+        if (maps.length === mapSettings.bannedMaps.length) {
+            zeroMaps = true;
+            return;
+        }
+
+        if (heroes.length === heroSettings.filteredHeroes.length) {
+            zeroHeroes = true;
             return;
         }
 
@@ -93,6 +107,10 @@
             <span class="placeholder">Generated run goes here...</span>
         {:else if generateNothing}
             <span class="placeholder">What did you expect to happen?</span>
+        {:else if zeroMaps}
+            <span class="placeholder">You filtered out all of the maps</span>
+        {:else if zeroHeroes}
+            <span class="placeholder">You filtered out all of the heroes</span>
         {:else}
             {#if map}
                 <h3 style="color: {map?.color};">{map?.name}</h3>
