@@ -383,6 +383,16 @@
         gap: 20px;
     }
 
+    @media (max-width: 450px) {
+        .settings {
+            width: 100%;
+        }
+
+        .settings-section {
+            width: 100%;
+        }
+    }
+
     .filter {
         display: flex;
         align-items: center;

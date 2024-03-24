@@ -160,7 +160,7 @@
     header {
         position: sticky;
         top: 0px;
-        z-index: 1;
+        z-index: 100;
     }
 
     main {
@@ -190,6 +190,20 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    @media (max-width: 450px) {
+        header h1 {
+            font-size: 1.5rem;
+        }
+
+        main {
+            padding: 10px;
+        }
+
+        .display {
+            width: 100%;
+        }
     }
 
     .display h3 {
