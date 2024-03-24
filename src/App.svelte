@@ -65,6 +65,18 @@
                     Math.floor(Math.random() * availableHeroes.length)
                 ];
 
+            if (
+                heroSettings.unique &&
+                heroSettings.players.length <= availableHeroes.length
+            ) {
+                while (generatedHeroes.includes(generatedHero)) {
+                    generatedHero =
+                        availableHeroes[
+                            Math.floor(Math.random() * availableHeroes.length)
+                        ];
+                }
+            }
+
             generatedHeroes.push(generatedHero);
         }
     }
