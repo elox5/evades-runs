@@ -282,6 +282,15 @@
     <form method="dialog">
         <button type="submit">Close</button>
     </form>
+    <div class="filter-settings">
+        <button on:click={() => (mapSettings.bannedMaps = [])}>All</button>
+        <button
+            on:click={() =>
+                (mapSettings.bannedMaps = maps.map((m) => m.short_name))}
+        >
+            None
+        </button>
+    </div>
     <div class="filter-list">
         {#each maps as map}
             <button
@@ -307,6 +316,15 @@
     <form method="dialog">
         <button type="submit">Close</button>
     </form>
+    <div class="filter-settings">
+        <button on:click={() => (heroSettings.filteredHeroes = [])}>All</button>
+        <button
+            on:click={() =>
+                (heroSettings.filteredHeroes = heroes.map((h) => h.name))}
+        >
+            None
+        </button>
+    </div>
     <div class="filter-list">
         {#each heroes as hero}
             <button
@@ -374,6 +392,15 @@
 
     .filter-modal {
         z-index: 10;
+    }
+
+    .filter-settings {
+        margin: 10px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
     }
 
     .filter-list {
