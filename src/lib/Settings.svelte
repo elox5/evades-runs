@@ -213,22 +213,24 @@
                 </div>
             </div>
 
-            <div>
-                <p>VP Amount: {mapSettings.minVp} - {mapSettings.maxVp}</p>
-                <div class="slider">
-                    <RangeSlider
-                        min={0}
-                        max={vpValues.length - 1}
-                        range
-                        pips
-                        pushy
-                        formatter={vpFormatter}
-                        springValues={{ stiffness: 1, damping: 1 }}
-                        all="label"
-                        bind:values={vpRange}
-                    />
+            {#key areaRange}
+                <div>
+                    <p>VP Amount: {mapSettings.minVp} - {mapSettings.maxVp}</p>
+                    <div class="slider">
+                        <RangeSlider
+                            min={0}
+                            max={vpValues.length - 1}
+                            range
+                            pips
+                            pushy
+                            formatter={vpFormatter}
+                            springValues={{ stiffness: 1, damping: 1 }}
+                            all="label"
+                            bind:values={vpRange}
+                        />
+                    </div>
                 </div>
-            </div>
+            {/key}
 
             <div class="filter">
                 <p>Custom filter:</p>
