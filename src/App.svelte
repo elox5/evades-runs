@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Button from "./lib/Button.svelte";
     import Settings from "./lib/Settings.svelte";
     import type { HeroSettings, MapSettings } from "./lib/settings";
     import { maps } from "./data/maps";
@@ -87,7 +86,7 @@
 </header>
 <main>
     <Settings bind:mapSettings bind:heroSettings></Settings>
-    <Button onClick={generate}>Generate!</Button>
+    <button style="font-size: 1.2rem" on:click={generate}>Generate!</button>
     <hr />
 
     <div class="display">
