@@ -80,9 +80,9 @@
                     .filter(
                         (map) =>
                             map.area_count >= mapSettings.minAreas &&
-                            map.area_count <= mapSettings.maxAreas
+                            map.area_count <= mapSettings.maxAreas,
                     )
-                    .map((map) => map.vp)
+                    .map((map) => map.vp),
             ),
         ].sort((a, b) => a - b);
     }
@@ -102,9 +102,9 @@
                     .filter(
                         (map) =>
                             map.area_count >= mapSettings.minAreas &&
-                            map.area_count <= mapSettings.maxAreas
+                            map.area_count <= mapSettings.maxAreas,
                     )
-                    .map((map) => map.vp)
+                    .map((map) => map.vp),
             ),
         ].sort((a, b) => a - b);
 
@@ -147,7 +147,7 @@
     function filterMap(name: string) {
         if (mapSettings.bannedMaps.includes(name)) {
             mapSettings.bannedMaps = mapSettings.bannedMaps.filter(
-                (map) => map !== name
+                (map) => map !== name,
             );
         } else {
             mapSettings.bannedMaps = [...mapSettings.bannedMaps, name];
@@ -157,7 +157,7 @@
     function filterHero(name: string) {
         if (heroSettings.filteredHeroes.includes(name)) {
             heroSettings.filteredHeroes = heroSettings.filteredHeroes.filter(
-                (hero) => hero !== name
+                (hero) => hero !== name,
             );
         } else {
             heroSettings.filteredHeroes = [
@@ -236,6 +236,7 @@
             </div>
 
             {#key areaRange}
+                {fixRange()}
                 <div>
                     <p>VP Amount: {mapSettings.minVp} - {mapSettings.maxVp}</p>
                     <div class="slider">
