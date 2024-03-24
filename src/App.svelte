@@ -9,7 +9,7 @@
     let heroSettings: HeroSettings;
 
     let map: MapData;
-    let list: string[] = [];
+    let generatedHeroes: string[] = [];
 
     let notGenerated: boolean = true;
     let generateNothing: boolean = false;
@@ -47,6 +47,10 @@
 
         map = availableMaps[Math.floor(Math.random() * availableMaps.length)];
     }
+
+    function generateHeroes() {
+        for (let i = 0; i < heroSettings.players.length; i++) {}
+    }
 </script>
 
 <header>
@@ -63,7 +67,7 @@
         {:else if generateNothing}
             <span class="placeholder">What did you expect to happen?</span>
         {:else}
-            <h3>{map.name}</h3>
+            <h3 style="color: {map.color};">{map.name}</h3>
         {/if}
     </div>
 </main>
@@ -127,16 +131,13 @@
 
         font-size: 1.5rem;
 
-        display: flex;
-        flex-direction: column;
-
         background-color: var(--element-bg-color);
         border-radius: 10px;
         padding: 20px;
 
         display: flex;
         flex-direction: column;
-        justify-content: start;
+        justify-content: center;
         align-items: center;
     }
 
