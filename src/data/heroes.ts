@@ -14,7 +14,7 @@ export const heroes: HeroData[] = [
   { name: "Jolt", color: "#e1e100" },
   { name: "Ghoul", color: "#bad7d8" },
   { name: "Cent", color: "#727272" },
-  { name: "Jotunn", color: "#5cacff" },
+  { name: "Jötunn", color: "#5cacff" },
   { name: "Candy", color: "#ff80bd" },
   { name: "Mirage", color: "#020fa2" },
   { name: "Boldrock", color: "#a18446" },
