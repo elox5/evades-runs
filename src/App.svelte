@@ -87,7 +87,6 @@
 <main>
     <Settings bind:mapSettings bind:heroSettings></Settings>
     <button style="font-size: 1.2rem" on:click={generate}>Generate!</button>
-    <hr />
 
     <div class="display">
         {#if notGenerated}

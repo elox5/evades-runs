@@ -25,6 +25,21 @@
 
     //
 
+    let mapFilterModal: HTMLDialogElement;
+
+    let mapFilterText = "";
+    $: {
+        if (mapSettings.bannedMaps.length === 0) {
+            mapFilterText = "All";
+        } else if (mapSettings.bannedMaps.length === maps.length) {
+            mapFilterText = "None??";
+        } else if (maps.length - mapSettings.bannedMaps.length === 1) {
+            mapFilterText = "1 Map?";
+        } else {
+            mapFilterText = `${maps.length - mapSettings.bannedMaps.length} Maps`;
+        }
+    }
+
     let heroFilterModal: HTMLDialogElement;
 
     let heroFilterText = "";
@@ -32,9 +47,9 @@
         if (heroSettings.filteredHeroes.length === 0) {
             heroFilterText = "All";
         } else if (heroSettings.filteredHeroes.length === heroes.length) {
-            heroFilterText = "None?";
+            heroFilterText = "None??";
         } else if (heroes.length - heroSettings.filteredHeroes.length === 1) {
-            heroFilterText = "1 Hero";
+            heroFilterText = "1 Hero?";
         } else {
             heroFilterText = `${heroes.length - heroSettings.filteredHeroes.length} Heroes`;
         }
@@ -107,6 +122,16 @@
 
     //
 
+    function filterMap(name: string) {
+        if (mapSettings.bannedMaps.includes(name)) {
+            mapSettings.bannedMaps = mapSettings.bannedMaps.filter(
+                (map) => map !== name,
+            );
+        } else {
+            mapSettings.bannedMaps = [...mapSettings.bannedMaps, name];
+        }
+    }
+
     function filterHero(name: string) {
         if (heroSettings.filteredHeroes.includes(name)) {
             heroSettings.filteredHeroes = heroSettings.filteredHeroes.filter(
@@ -122,7 +147,13 @@
 
     //
 
-    function onFilterButtonMouseEvent(e: MouseEvent, hero: HeroData) {
+    function onFilterButtonMouseEventMap(e: MouseEvent, name: string) {
+        if (e.buttons === 1) {
+            filterMap(name);
+        }
+    }
+
+    function onFilterButtonMouseEventHero(e: MouseEvent, hero: HeroData) {
         if (e.buttons === 1) {
             filterHero(hero.name);
         }
@@ -198,6 +229,13 @@
                     />
                 </div>
             </div>
+
+            <div class="filter">
+                <p>Custom filter:</p>
+                <button on:click={() => mapFilterModal.showModal()}>
+                    {mapFilterText}
+                </button>
+            </div>
         {/if}
     </div>
     <div class="settings-section">
@@ -240,6 +278,31 @@
     </div>
 </div>
 
+<dialog class="filter-modal" bind:this={mapFilterModal}>
+    <form method="dialog">
+        <button type="submit">Close</button>
+    </form>
+    <div class="filter-list">
+        {#each maps as map}
+            <button
+                class:filtered={mapSettings.bannedMaps.includes(map.short_name)}
+                style="background-color: {map.color};"
+                on:mousedown={(e) =>
+                    onFilterButtonMouseEventMap(e, map.short_name)}
+                on:mouseenter={(e) =>
+                    onFilterButtonMouseEventMap(e, map.short_name)}
+            >
+                {map.short_name.toUpperCase()}
+                {#if mapSettings.bannedMaps.includes(map.short_name)}
+                    <div class="filter-mark">
+                        <Plus />
+                    </div>
+                {/if}
+            </button>
+        {/each}
+    </div>
+</dialog>
+
 <dialog class="filter-modal" bind:this={heroFilterModal}>
     <form method="dialog">
         <button type="submit">Close</button>
@@ -249,8 +312,8 @@
             <button
                 class:filtered={heroSettings.filteredHeroes.includes(hero.name)}
                 style="background-color: {hero.color};"
-                on:mousedown={(e) => onFilterButtonMouseEvent(e, hero)}
-                on:mouseenter={(e) => onFilterButtonMouseEvent(e, hero)}
+                on:mousedown={(e) => onFilterButtonMouseEventHero(e, hero)}
+                on:mouseenter={(e) => onFilterButtonMouseEventHero(e, hero)}
             >
                 {hero.name}
                 {#if heroSettings.filteredHeroes.includes(hero.name)}
