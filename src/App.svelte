@@ -16,12 +16,14 @@
     let zeroMaps: boolean = false;
     let zeroHeroes: boolean = false;
     let noFittingMaps: boolean = false;
+    let notEnoughHeroes: boolean = false;
 
     function generate() {
         notGenerated = false;
         zeroMaps = false;
         zeroHeroes = false;
         noFittingMaps = false;
+        notEnoughHeroes = false;
 
         if (!mapSettings.generateMap && !heroSettings.generateHeroes) {
             generateNothing = true;
@@ -79,6 +81,14 @@
             (hero) => heroSettings.filteredHeroes.indexOf(hero.name) === -1,
         );
 
+        if (
+            heroSettings.unique &&
+            heroSettings.players.length > availableHeroes.length
+        ) {
+            notEnoughHeroes = true;
+            return;
+        }
+
         for (let i = 0; i < heroSettings.players.length; i++) {
             let generatedHero =
                 availableHeroes[
@@ -120,6 +130,10 @@
             <span class="placeholder">You filtered out all of the heroes</span>
         {:else if noFittingMaps}
             <span class="placeholder">No maps fit these filters</span>
+        {:else if notEnoughHeroes}
+            <span class="placeholder">
+                Not enough heroes to uniquely distribute
+            </span>
         {:else}
             {#if map}
                 <h3 style="color: {map?.color};">{map?.name}</h3>
