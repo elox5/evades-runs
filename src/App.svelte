@@ -153,7 +153,7 @@
     </div>
 </main>
 <footer>
-    <p>
+    <p class="made-by">
         Made by
         <a class="elox" href="https://github.com/elox5" target="_blank">
             elOx
@@ -163,10 +163,10 @@
             Bonsix
         </a>
     </p>
-    <p>
+    <p class="evades-link">
         <a class="evades" href="https://evades.io" target="_blank">evades.io</a>
     </p>
-    <a href="https://github.com/elox5/evades-runs">Source</a>
+    <a class="source" href="https://github.com/elox5/evades-runs">Source</a>
 </footer>
 
 <style>
@@ -178,6 +178,20 @@
         justify-content: space-between;
         align-items: center;
         padding: 20px;
+    }
+
+    .made-by,
+    .evades-link,
+    .source {
+        flex: 1;
+    }
+
+    .made-by {
+        text-align: left;
+    }
+
+    .source {
+        text-align: right;
     }
 
     header {
