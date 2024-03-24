@@ -122,7 +122,7 @@
 
     //
 
-    function onFilterButtonMouseHover(e: MouseEvent, hero: HeroData) {
+    function onFilterButtonMouseEvent(e: MouseEvent, hero: HeroData) {
         if (e.buttons === 1) {
             filterHero(hero.name);
         }
@@ -249,8 +249,8 @@
             <button
                 class:filtered={heroSettings.filteredHeroes.includes(hero.name)}
                 style="background-color: {hero.color};"
-                on:click={() => filterHero(hero.name)}
-                on:mouseenter={(e) => onFilterButtonMouseHover(e, hero)}
+                on:mousedown={(e) => onFilterButtonMouseEvent(e, hero)}
+                on:mouseenter={(e) => onFilterButtonMouseEvent(e, hero)}
             >
                 {hero.name}
                 {#if heroSettings.filteredHeroes.includes(hero.name)}
