@@ -18,6 +18,7 @@
 
   --main-bg-color: #242424;
   --element-bg-color: #2f2f2f;
+  --button-bg-color: #161616;
   --header-bg-color: #444;
   --text-color: rgba(255, 255, 255, 0.87);
 
@@ -55,7 +56,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: var(--element-bg-color);
+  background-color: var(--button-bg-color);
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -80,4 +81,8 @@ hr {
   grid-template-rows: 70px 1fr 70px;
 
   text-align: center;
+}
+
+dialog {
+  background-color: #000000dd;
 }

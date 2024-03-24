@@ -1,5 +1,3 @@
-import type { Hero } from "../data/heroes";
-
 export interface GenerationSettings {
     count: number;
     uniqueMaps: boolean;
@@ -17,11 +15,12 @@ export interface MapSettings {
 
 export interface HeroSettings {
     generateHeroes: boolean;
+    filteredHeroes: string[];
     unique: boolean;
     named: boolean;
     players: PlayerSettings[];
 }
 
 export interface PlayerSettings {
-    bannedHeroes: Hero[];
+    bannedHeroes: string[];
 }

@@ -24,11 +24,11 @@ export const heroes: HeroData[] = [
   { name: "Stella", color: "#fffa86" },
   { name: "Viola", color: "#d9b130" },
   { name: "Mortuus", color: "#7fb332" },
-  { name: "Cybot", color: "#926be3" },
   { name: "Echelon", color: "#5786de" },
   { name: "Demona", color: "#7d3c9e" },
   { name: "Stheno", color: "#cfa6ec" },
   { name: "Factorb", color: "#6e391e" },
+  { name: "Cybot", color: "#926be3" },
 ];
 
 export interface HeroData {

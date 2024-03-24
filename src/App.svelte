@@ -4,12 +4,13 @@
     import type { HeroSettings, MapSettings } from "./lib/settings";
     import { maps } from "./data/maps";
     import type { MapData } from "./data/maps";
+    import { heroes, type HeroData } from "./data/heroes";
 
     let mapSettings: MapSettings;
     let heroSettings: HeroSettings;
 
-    let map: MapData;
-    let generatedHeroes: string[] = [];
+    let map: MapData | null = null;
+    let generatedHeroes: HeroData[] = [];
 
     let notGenerated: boolean = true;
     let generateNothing: boolean = false;
@@ -23,9 +24,14 @@
         }
 
         generateNothing = false;
+        map = null;
+        generatedHeroes = [];
 
         if (mapSettings.generateMap) {
             generateMap();
+        }
+        if (heroSettings.generateHeroes) {
+            generateHeroes();
         }
     }
 
@@ -49,7 +55,18 @@
     }
 
     function generateHeroes() {
-        for (let i = 0; i < heroSettings.players.length; i++) {}
+        let availableHeroes = heroes.filter(
+            (hero) => heroSettings.filteredHeroes.indexOf(hero.name) === -1,
+        );
+
+        for (let i = 0; i < heroSettings.players.length; i++) {
+            let generatedHero =
+                availableHeroes[
+                    Math.floor(Math.random() * availableHeroes.length)
+                ];
+
+            generatedHeroes.push(generatedHero);
+        }
     }
 </script>
 
@@ -67,7 +84,20 @@
         {:else if generateNothing}
             <span class="placeholder">What did you expect to happen?</span>
         {:else}
-            <h3 style="color: {map.color};">{map.name}</h3>
+            {#if map}
+                <h3 style="color: {map?.color};">{map?.name}</h3>
+            {/if}
+
+            <div class="hero-list">
+                {#each generatedHeroes as hero, index}
+                    <span class="hero-name" style="color: {hero.color};">
+                        {hero.name}
+                    </span>
+                    {#if index < generatedHeroes.length - 1}
+                        <span class="bullet">•</span>
+                    {/if}
+                {/each}
+            </div>
         {/if}
     </div>
 </main>
@@ -143,6 +173,18 @@
 
     .display h3 {
         font-size: 1.4rem;
+    }
+
+    .hero-list {
+        font-size: 1.2rem;
+    }
+
+    .hero-name {
+        text-shadow: 0px 0px 5px black;
+    }
+
+    .bullet {
+        margin: 10px;
     }
 
     .placeholder {

@@ -2,6 +2,8 @@
     import RangeSlider from "svelte-range-slider-pips";
     import { maps } from "../data/maps";
     import type { HeroSettings, MapSettings, PlayerSettings } from "./settings";
+    import { heroes, type HeroData } from "../data/heroes";
+    import { Plus } from "lucide-svelte";
 
     export let mapSettings: MapSettings = {
         generateMap: true,
@@ -15,10 +17,30 @@
 
     export let heroSettings: HeroSettings = {
         generateHeroes: true,
+        filteredHeroes: [],
         unique: false,
         named: false,
         players: [],
     };
+
+    //
+
+    let heroFilterModal: HTMLDialogElement;
+
+    let heroFilterText = "";
+    $: {
+        if (heroSettings.filteredHeroes.length === 0) {
+            heroFilterText = "All";
+        } else if (heroSettings.filteredHeroes.length === heroes.length) {
+            heroFilterText = "None?";
+        } else if (heroes.length - heroSettings.filteredHeroes.length === 1) {
+            heroFilterText = "1 Hero";
+        } else {
+            heroFilterText = `${heroes.length - heroSettings.filteredHeroes.length} Heroes`;
+        }
+    }
+
+    //
 
     let heroCount = [1];
 
@@ -82,6 +104,29 @@
     const vpFormatter = (value: number) => {
         return vpValues[value].toString();
     };
+
+    //
+
+    function filterHero(name: string) {
+        if (heroSettings.filteredHeroes.includes(name)) {
+            heroSettings.filteredHeroes = heroSettings.filteredHeroes.filter(
+                (hero) => hero !== name,
+            );
+        } else {
+            heroSettings.filteredHeroes = [
+                ...heroSettings.filteredHeroes,
+                name,
+            ];
+        }
+    }
+
+    //
+
+    function onFilterButtonMouseHover(e: MouseEvent, hero: HeroData) {
+        if (e.buttons === 1) {
+            filterHero(hero.name);
+        }
+    }
 
     //
 
@@ -184,9 +229,39 @@
                     />
                 </div>
             </div>
+
+            <div class="filter">
+                <p>Custom filter:</p>
+                <button on:click={() => heroFilterModal.showModal()}>
+                    {heroFilterText}
+                </button>
+            </div>
         {/if}
     </div>
 </div>
+
+<dialog class="filter-modal" bind:this={heroFilterModal}>
+    <form method="dialog">
+        <button type="submit">Close</button>
+    </form>
+    <div class="filter-list">
+        {#each heroes as hero}
+            <button
+                class:filtered={heroSettings.filteredHeroes.includes(hero.name)}
+                style="background-color: {hero.color};"
+                on:click={() => filterHero(hero.name)}
+                on:mouseenter={(e) => onFilterButtonMouseHover(e, hero)}
+            >
+                {hero.name}
+                {#if heroSettings.filteredHeroes.includes(hero.name)}
+                    <div class="filter-mark">
+                        <Plus />
+                    </div>
+                {/if}
+            </button>
+        {/each}
+    </div>
+</dialog>
 
 <style>
     .settings {
@@ -225,6 +300,56 @@
         flex-direction: column;
 
         gap: 20px;
+    }
+
+    .filter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .filter-modal {
+        z-index: 10;
+    }
+
+    .filter-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .filter-list button {
+        position: relative;
+
+        font-weight: bold;
+        text-shadow: #000000 0px 0px 3px;
+
+        font-size: 1.2rem;
+
+        overflow: hidden;
+
+        border: none;
+    }
+    .filter-list button.filtered {
+        filter: saturate(0.5) brightness(0.5);
+    }
+
+    .filter-mark {
+        position: absolute;
+        top: -18px;
+        right: -18px;
+        background-color: red;
+        width: 40px;
+        height: 40px;
+
+        display: flex;
+        justify-content: center;
+        align-items: end;
+
+        transform: rotate(45deg);
     }
 
     h1 {
