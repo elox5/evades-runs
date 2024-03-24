@@ -15,11 +15,13 @@
     let generateNothing: boolean = false;
     let zeroMaps: boolean = false;
     let zeroHeroes: boolean = false;
+    let noFittingMaps: boolean = false;
 
     function generate() {
         notGenerated = false;
         zeroMaps = false;
         zeroHeroes = false;
+        noFittingMaps = false;
 
         if (!mapSettings.generateMap && !heroSettings.generateHeroes) {
             generateNothing = true;
@@ -63,6 +65,11 @@
                     map.area_count >= mapSettings.minAreas &&
                     map.area_count <= mapSettings.maxAreas,
             );
+
+        if (availableMaps.length === 0) {
+            noFittingMaps = true;
+            return;
+        }
 
         map = availableMaps[Math.floor(Math.random() * availableMaps.length)];
     }
@@ -111,6 +118,8 @@
             <span class="placeholder">You filtered out all of the maps</span>
         {:else if zeroHeroes}
             <span class="placeholder">You filtered out all of the heroes</span>
+        {:else if noFittingMaps}
+            <span class="placeholder">No maps fit these filters</span>
         {:else}
             {#if map}
                 <h3 style="color: {map?.color};">{map?.name}</h3>
