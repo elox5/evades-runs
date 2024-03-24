@@ -80,12 +80,14 @@
                     .filter(
                         (map) =>
                             map.area_count >= mapSettings.minAreas &&
-                            map.area_count <= mapSettings.maxAreas,
+                            map.area_count <= mapSettings.maxAreas
                     )
-                    .map((map) => map.vp),
+                    .map((map) => map.vp)
             ),
         ].sort((a, b) => a - b);
     }
+    let lastMinVp = 0;
+    let lastMaxVp = 0;
     let vpRange = [0, 12];
 
     $: if (areaRange) {
@@ -100,17 +102,37 @@
                     .filter(
                         (map) =>
                             map.area_count >= mapSettings.minAreas &&
-                            map.area_count <= mapSettings.maxAreas,
+                            map.area_count <= mapSettings.maxAreas
                     )
-                    .map((map) => map.vp),
+                    .map((map) => map.vp)
             ),
         ].sort((a, b) => a - b);
 
+        lastMinVp = mapSettings.minVp;
+        lastMaxVp = mapSettings.maxVp;
         mapSettings.minVp = vpValuesLocal[vpRange[0]];
         mapSettings.maxVp = vpValuesLocal[vpRange[1]];
+        if (lastMaxVp == 0) lastMaxVp = mapSettings.maxVp;
     }
 
     //
+
+    const getVp = (min: boolean) => {
+        let check = vpValues[vpValues.length - 1];
+        const vp = vpValues.filter((v) => {
+            const distance = Math.abs((min ? lastMinVp : lastMaxVp) - v);
+            if (distance <= check) {
+                check = distance;
+                return true;
+            }
+        });
+        return vpValues.indexOf(vp[vp.length - 1]);
+    };
+
+    const fixRange = () => {
+        vpRange = [getVp(true), getVp(false)];
+        return "";
+    };
 
     const areaFormatter = (value: number) => {
         return areaLengths[value].name;
@@ -125,7 +147,7 @@
     function filterMap(name: string) {
         if (mapSettings.bannedMaps.includes(name)) {
             mapSettings.bannedMaps = mapSettings.bannedMaps.filter(
-                (map) => map !== name,
+                (map) => map !== name
             );
         } else {
             mapSettings.bannedMaps = [...mapSettings.bannedMaps, name];
@@ -135,7 +157,7 @@
     function filterHero(name: string) {
         if (heroSettings.filteredHeroes.includes(name)) {
             heroSettings.filteredHeroes = heroSettings.filteredHeroes.filter(
-                (hero) => hero !== name,
+                (hero) => hero !== name
             );
         } else {
             heroSettings.filteredHeroes = [
