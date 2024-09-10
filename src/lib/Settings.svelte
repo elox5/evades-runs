@@ -192,8 +192,8 @@
     const areaLengths: AreaLength[] = [
         { name: "tiny", min: 8, max: 15 },
         { name: "short", min: 16, max: 28 },
-        { name: "normal", min: 38, max: 43 },
-        { name: "long", min: 54, max: 80 },
+        { name: "normal", min: 38, max: 46 },
+        { name: "long", min: 80, max: 80 },
         { name: "huge", min: 400, max: 480 },
     ];
 </script>
